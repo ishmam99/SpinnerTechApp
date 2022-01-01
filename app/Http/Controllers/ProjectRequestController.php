@@ -22,10 +22,7 @@ class ProjectRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+ 
 
     /**
      * Store a newly created resource in storage.
@@ -65,7 +62,8 @@ class ProjectRequestController extends Controller
      */
     public function show($id)
     {
-        //
+      $projectRequest=  ProjectRequest::findorfail($id);
+      return response()->json($projectRequest);
     }
 
     /**
@@ -74,10 +72,7 @@ class ProjectRequestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -88,7 +83,26 @@ class ProjectRequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $projectRequest=ProjectRequest::findorfail($id);
+        $validateData= $request->validate([
+            'name'=>'required',
+            'email'=>'required|email',
+            'phone'=>'required|numeric|min:11',
+            'company_name'=>'required',
+            'address'=>'required',
+            'project_budget'=>'required',
+            'project_id'=>'required',
+            'service_id'=>'required',
+            'country'=>'required',
+            'pages_num'=>'required',
+            'domain'=>'required',
+            'content'=>'required',
+            'logo'=>'required',
+            'details'=>'required'
+        ]);
+        $projectRequest->update($validateData);
+        return response('Updated');
+
     }
 
     /**
@@ -99,6 +113,7 @@ class ProjectRequestController extends Controller
      */
     public function destroy($id)
     {
-        //
+       ProjectRequest::find($id)->delete();
+       return response('Deleted');
     }
 }
